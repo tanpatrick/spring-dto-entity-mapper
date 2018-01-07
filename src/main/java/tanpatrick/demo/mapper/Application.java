@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,9 @@ public class Application extends WebMvcConfigurerAdapter {
     private static final Logger LOGGER = Logger.getLogger(Application.class);
 
     @Autowired
+    private ApplicationContext applicationContext;
+
+    @Autowired
     private PersonMapper personMapper;
 
     public static void main(String[] args) {
@@ -35,7 +39,7 @@ public class Application extends WebMvcConfigurerAdapter {
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-        argumentResolvers.add(new CustomRequestResponseMapper());
+        argumentResolvers.add(new CustomRequestResponseMapper(applicationContext));
         super.addArgumentResolvers(argumentResolvers);
     }
 

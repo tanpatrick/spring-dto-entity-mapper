@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * @author Patrick Tan <tanpatrickjoseph@gmail.com>
  */
@@ -17,5 +20,6 @@ public class PersonDto {
     private String firstName;
     private String city;
     private String country;
+    private Set<ContactDto> contactDtos = new HashSet<>();
 
 }

@@ -7,12 +7,15 @@ import tanpatrick.demo.mapper.model.Person;
 /**
  * @author Patrick Tan <tanpatrickjoseph@gmail.com>
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring",
+    uses = { ContactMapper.class }
+)
 public interface PersonMapper {
 
     @Mappings({
         @Mapping(source = "city", target = "address.city"),
-        @Mapping(source = "country", target = "address.country")
+        @Mapping(source = "country", target = "address.country"),
+        @Mapping(source = "contactDtos", target = "contacts")
     })
     Person toModel(PersonDto personDto);
 

@@ -1,7 +1,7 @@
 package tanpatrick.demo.mapper;
 
 import org.apache.log4j.Logger;
-import org.mapstruct.factory.Mappers;
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -24,9 +24,12 @@ import java.util.Collections;
 public class CustomRequestResponseMapper extends RequestResponseBodyMethodProcessor {
 
     private static final Logger LOGGER = Logger.getLogger(CustomRequestResponseMapper.class);
+    private ApplicationContext applicationContext;
 
-    public CustomRequestResponseMapper() {
+    public CustomRequestResponseMapper(ApplicationContext applicationContext) {
         super(Collections.<HttpMessageConverter<?>>singletonList(new MappingJackson2HttpMessageConverter()));
+
+        this.applicationContext = applicationContext;
     }
 
     @Override
@@ -50,7 +53,7 @@ public class CustomRequestResponseMapper extends RequestResponseBodyMethodProces
         MyMapper myMapper = parameter.getParameterAnnotation(MyMapper.class);
 
         Object value = super.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
-        Object mapper = Mappers.getMapper(myMapper.mapper());
+        Object mapper = applicationContext.getBean(myMapper.mapper());
 
         for (Method method : mapper.getClass().getMethods()) {
             if (myMapper.method().equals(method.getName())) {
@@ -60,5 +63,5 @@ public class CustomRequestResponseMapper extends RequestResponseBodyMethodProces
 
         return null;
     }
-
+    
 }
